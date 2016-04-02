@@ -1,7 +1,9 @@
-package com.tf.fluxbackup;
+package com.tf.fluxbackup.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.tf.fluxbackup.R;
 
 public class MainActivity extends AppCompatActivity {
 
