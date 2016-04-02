@@ -1,0 +1,18 @@
+language: android
+android:
+  components:
+    - platform-tools
+    - tools
+
+    - build-tools-22.0.1
+
+    - android-22
+
+    - extra-android-m2repository
+
+  licenses:
+    - android-sdk-license-.+
+
+  jdk:
+      - oraclejdk7
+      - oraclejdk8
