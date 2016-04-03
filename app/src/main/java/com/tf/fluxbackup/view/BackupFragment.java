@@ -3,15 +3,15 @@ package com.tf.fluxbackup.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tf.fluxbackup.R;
+import com.tf.fluxbackup.model.OptionsMenuFragment;
 
-public class BackupFragment extends Fragment {
+public class BackupFragment extends OptionsMenuFragment {
 
     public BackupFragment() {
         // Required empty public constructor
@@ -33,5 +33,10 @@ public class BackupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((MainActivity) getActivity()).changeMenu(R.menu.menu_backup);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
