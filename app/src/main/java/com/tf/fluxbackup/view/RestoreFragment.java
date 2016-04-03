@@ -13,6 +13,8 @@ import com.tf.fluxbackup.model.OptionsMenuFragment;
 
 public class RestoreFragment extends OptionsMenuFragment {
 
+    private static final String TAG = RestoreFragment.class.getSimpleName();
+
     public RestoreFragment() {
         // Required empty public constructor
     }
