@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
+import com.tf.fluxbackup.service.BackupIntentService;
 import com.tf.fluxbackup.util.PackageManagerHelper;
 
 import java.util.ArrayList;
@@ -62,6 +63,14 @@ public class BackupFragment extends OptionsMenuFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_backup) {
+            for (String packageName : selectedPackages) {
+                BackupIntentService.backup(getContext(), packageName);
+            }
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
