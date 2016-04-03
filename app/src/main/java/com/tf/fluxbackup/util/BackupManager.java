@@ -2,7 +2,6 @@ package com.tf.fluxbackup.util;
 
 import android.content.Context;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -46,7 +45,7 @@ public class BackupManager {
             // Clean up
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
 
-            executeShell(command);
+            ShellScriptHelper.executeShell(command);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
 
@@ -86,7 +85,7 @@ public class BackupManager {
             // Clean up
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
 
-            executeShell(command);
+            ShellScriptHelper.executeShell(command);
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
 
@@ -94,15 +93,5 @@ public class BackupManager {
         }
 
         return success;
-    }
-
-    private static void executeShell(String command) throws IOException, InterruptedException {
-        Process process = Runtime.getRuntime().exec("su");
-        DataOutputStream os = new DataOutputStream(process.getOutputStream());
-        os.writeBytes(command);
-//        os.writeBytes("\nexit\n");
-        os.flush();
-        os.close();
-        process.waitFor();
     }
 }
