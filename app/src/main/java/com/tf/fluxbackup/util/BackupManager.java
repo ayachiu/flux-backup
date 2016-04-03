@@ -1,6 +1,8 @@
 package com.tf.fluxbackup.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +88,13 @@ public class BackupManager {
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
 
             ShellScriptHelper.executeShell(command);
-        } catch (InterruptedException | IOException e) {
+
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+
+            // TODO Handle multi user environment
+            command = "chown -R u0_a" + String.valueOf(applicationInfo.uid).substring(2) + " /data/data/" + packageName;
+            ShellScriptHelper.executeShell(command);
+        } catch (InterruptedException | IOException | PackageManager.NameNotFoundException e) {
             e.printStackTrace();
 
             success = false;
