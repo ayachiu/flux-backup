@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flux Backup</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="or">OR</string>
+    <string name="choose_action">What would you like to do?</string>
 </resources>
