@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
     public void changeMenu(int menuResource) {
         clearMenu();
 
-        getMenuInflater().inflate(menuResource, menu);
+        if (menu != null) {
+            getMenuInflater().inflate(menuResource, menu);
+        }
     }
 
     public void clearMenu() {
