@@ -7,4 +7,14 @@
         android:title="@string/restore"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_select_all"
+        android:title="@string/select_all"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_select_none"
+        android:title="@string/select_none"
+        app:showAsAction="ifRoom" />
+
 </menu>

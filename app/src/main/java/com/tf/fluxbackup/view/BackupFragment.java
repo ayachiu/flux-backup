@@ -1,8 +1,10 @@
 package com.tf.fluxbackup.view;
 
 
+import android.app.ProgressDialog;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,23 +57,80 @@ public class BackupFragment extends OptionsMenuFragment {
 
         listApplications = (RecyclerView) view.findViewById(R.id.list_applications);
 
-        applicationInfos = PackageManagerHelper.getInstalledPackages(getContext());
-
-        listApplications.setLayoutManager(new LinearLayoutManager(getContext()));
-        listApplications.setAdapter(new ApplicationAdapter());
+        new ApplicationFetcher().execute();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_backup) {
-            for (String packageName : selectedPackages) {
-                BackupIntentService.backup(getContext(), packageName);
-            }
+            backupSelectedPackages();
+
+            return true;
+        } else if (item.getItemId() == R.id.action_select_all) {
+            selectAllPackages();
+
+            return true;
+        } else if (item.getItemId() == R.id.action_select_none) {
+            unselectAllPackages();
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void unselectAllPackages() {
+        selectedPackages.clear();
+
+        listApplications.getAdapter().notifyDataSetChanged();
+    }
+
+    private void selectAllPackages() {
+        for (PackageInfo packageInfo : applicationInfos) {
+            if (!selectedPackages.contains(packageInfo.packageName)) {
+                selectedPackages.add(packageInfo.packageName);
+            }
+        }
+
+        listApplications.getAdapter().notifyDataSetChanged();
+    }
+
+    private void backupSelectedPackages() {
+        for (String packageName : selectedPackages) {
+            BackupIntentService.backup(getContext(), packageName);
+        }
+    }
+
+    private class ApplicationFetcher extends AsyncTask<Void, Void, Void> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Gathering information about your installed applications", true, false);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            applicationInfos = PackageManagerHelper.getInstalledPackages(getContext());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            listApplications.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            listApplications.setAdapter(new ApplicationAdapter());
+
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        }
     }
 
     private class ApplicationAdapter extends RecyclerView.Adapter<ApplicationViewHolder> {

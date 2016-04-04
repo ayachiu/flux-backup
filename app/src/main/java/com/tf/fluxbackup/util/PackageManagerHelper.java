@@ -15,7 +15,7 @@ public class PackageManagerHelper {
 
     public static List<PackageInfo> getInstalledPackages(Context context) {
         final PackageManager packageManager = context.getPackageManager();
-        
+
         List<PackageInfo> installedPackages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA);
 
         Collections.sort(installedPackages, new Comparator<PackageInfo>() {

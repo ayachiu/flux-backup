@@ -4,4 +4,6 @@
     <string name="restore">Restore</string>
     <string name="or">OR</string>
     <string name="choose_action">What would you like to do?</string>
+    <string name="select_all">Select All</string>
+    <string name="select_none">Select None</string>
 </resources>
