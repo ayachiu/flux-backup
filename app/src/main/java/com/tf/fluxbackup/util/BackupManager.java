@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kamran on 4/2/16.
@@ -101,5 +103,17 @@ public class BackupManager {
         }
 
         return success;
+    }
+
+    public static List<String> getAllBackedUpPackages() {
+        ArrayList<String> backedUpPackages = new ArrayList<>();
+
+        File[] files = new File(BACKUP_LOCATION).listFiles();
+
+        for (File file : files) {
+            backedUpPackages.add(file.getName());
+        }
+
+        return backedUpPackages;
     }
 }

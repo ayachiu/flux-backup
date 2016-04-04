@@ -22,6 +22,10 @@
         <service
             android:name=".service.BackupIntentService"
             android:exported="false"></service>
+
+        <service
+            android:name=".service.RestoreIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
