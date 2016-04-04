@@ -107,7 +107,7 @@ public class RestoreFragment extends OptionsMenuFragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Gathering information about your installed applications", true, false);
+            progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Gathering information about your backed up applications", true, false);
         }
 
         @Override
