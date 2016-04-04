@@ -29,8 +29,8 @@ import java.util.List;
 public class BackupFragment extends OptionsMenuFragment {
 
     private static final String TAG = BackupFragment.class.getSimpleName();
-    private RecyclerView listApplications;
 
+    private RecyclerView listApplications;
     private List<PackageInfo> applicationInfos;
     private List<String> selectedPackages = new ArrayList<>();
 
