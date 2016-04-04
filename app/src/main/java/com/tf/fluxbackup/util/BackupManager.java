@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -113,6 +115,13 @@ public class BackupManager {
         for (File file : files) {
             backedUpPackages.add(file.getName());
         }
+
+        Collections.sort(backedUpPackages, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.compareTo(rhs);
+            }
+        });
 
         return backedUpPackages;
     }
