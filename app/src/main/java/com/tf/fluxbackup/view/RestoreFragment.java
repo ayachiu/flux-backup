@@ -51,11 +51,16 @@ public class RestoreFragment extends OptionsMenuFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((MainActivity) getActivity()).changeMenu(R.menu.menu_restore);
+        ((MainActivity) getActivity()).changeMenu(getMenuResource());
 
         listBackups = (RecyclerView) view.findViewById(R.id.list_backups);
 
         new BackupFetcher().execute();
+    }
+
+    @Override
+    public int getMenuResource() {
+        return R.menu.menu_restore;
     }
 
     @Override

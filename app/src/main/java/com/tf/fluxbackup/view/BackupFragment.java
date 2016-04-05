@@ -53,11 +53,16 @@ public class BackupFragment extends OptionsMenuFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((MainActivity) getActivity()).changeMenu(R.menu.menu_backup);
+        ((MainActivity) getActivity()).changeMenu(getMenuResource());
 
         listApplications = (RecyclerView) view.findViewById(R.id.list_applications);
 
         new ApplicationFetcher().execute();
+    }
+
+    @Override
+    public int getMenuResource() {
+        return R.menu.menu_backup;
     }
 
     @Override

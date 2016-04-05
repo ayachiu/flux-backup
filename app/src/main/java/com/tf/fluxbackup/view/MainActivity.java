@@ -20,20 +20,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment fragment = ActionChoiceFragment.newInstance();
+        currentFragment =  ActionChoiceFragment.newInstance();
 
         if (BackupManager.getAllBackedUpPackages().size() == 0) {
-            fragment = BackupFragment.newInstance();
+            currentFragment = BackupFragment.newInstance();
         }
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_layout, fragment)
+                .replace(R.id.root_layout, currentFragment)
                 .commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
+
+        if (currentFragment instanceof OptionsMenuFragment) {
+            getMenuInflater().inflate(((OptionsMenuFragment) currentFragment).getMenuResource(), menu);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
