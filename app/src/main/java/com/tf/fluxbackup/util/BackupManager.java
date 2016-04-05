@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,5 +129,40 @@ public class BackupManager {
         }
 
         return backedUpPackages;
+    }
+
+    public static void deleteBackups(final List<String> packages) {
+        File backupDirectory = new File(BACKUP_LOCATION);
+
+        if (backupDirectory.exists()) {
+            File[] filesToBeDeleted = backupDirectory.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    return packages.contains(filename);
+                }
+            });
+
+            for (File file : filesToBeDeleted) {
+                deleteDirectory(file);
+            }
+        }
+    }
+
+    public static void deleteDirectory(File file) {
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                File[] subFiles = file.listFiles();
+
+                for (File subFile : subFiles) {
+                    if (subFile.isDirectory()) {
+                        deleteDirectory(subFile);
+                    } else {
+                        subFile.delete();
+                    }
+                }
+            }
+
+            file.delete();
+        }
     }
 }

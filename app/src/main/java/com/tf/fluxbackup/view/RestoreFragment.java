@@ -94,9 +94,45 @@ public class RestoreFragment extends OptionsMenuFragment {
             unselectAllPackages();
 
             return true;
+        } else if (item.getItemId() == R.id.action_delete) {
+            deleteSelectedBackups();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteSelectedBackups() {
+        new AsyncTask<Void, Void, Void>() {
+
+            public ProgressDialog progressDialog;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(getContext(), "Please Wait", "Deleting selected backups", true, false);
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                BackupManager.deleteBackups(selectedPackages);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+                new BackupFetcher().execute();
+
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+            }
+        }.execute();
     }
 
     private void unselectAllPackages() {
