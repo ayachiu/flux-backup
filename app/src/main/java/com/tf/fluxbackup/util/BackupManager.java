@@ -110,18 +110,22 @@ public class BackupManager {
     public static List<String> getAllBackedUpPackages() {
         ArrayList<String> backedUpPackages = new ArrayList<>();
 
-        File[] files = new File(BACKUP_LOCATION).listFiles();
+        File backupDirectory = new File(BACKUP_LOCATION);
 
-        for (File file : files) {
-            backedUpPackages.add(file.getName());
-        }
+        if (backupDirectory.exists()) {
+            File[] files = backupDirectory.listFiles();
 
-        Collections.sort(backedUpPackages, new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                return lhs.compareTo(rhs);
+            for (File file : files) {
+                backedUpPackages.add(file.getName());
             }
-        });
+
+            Collections.sort(backedUpPackages, new Comparator<String>() {
+                @Override
+                public int compare(String lhs, String rhs) {
+                    return lhs.compareTo(rhs);
+                }
+            });
+        }
 
         return backedUpPackages;
     }
