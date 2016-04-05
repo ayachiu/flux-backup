@@ -16,6 +16,7 @@ public class RestoreIntentService extends AdvancedIntentService {
     private static final String ACTION_RESTORE = "com.tf.fluxbackup.service.action.RESTORE";
 
     private static final String EXTRA_PACKAGE_NAME = "com.tf.fluxbackup.service.extra.PACKAGE_NAME";
+    private static int restoreFailureNotificationId = 2000;
 
     public RestoreIntentService() {
         super("BackupIntentService");
@@ -52,7 +53,11 @@ public class RestoreIntentService extends AdvancedIntentService {
     private void handleActionRestore(String packageName) {
         showProgressNotification(packageName);
 
-        BackupManager.restorePackage(getBaseContext(), packageName);
+        boolean restoreSuccess = BackupManager.restorePackage(getBaseContext(), packageName);
+
+        if (!restoreSuccess) {
+            showRestoreFailureNotification(packageName);
+        }
 
         if (wasLastInQueue()) {
             showRestoreCompleteNotification();
@@ -74,6 +79,17 @@ public class RestoreIntentService extends AdvancedIntentService {
                                 .setContentText(packageName)
                                 .setTicker("Restoring - " + progressInPercent)
                                 .setOngoing(true)
+                                .build());
+    }
+
+    private void showRestoreFailureNotification(String packageName) {
+        NotificationManagerCompat.from(getBaseContext())
+                .notify(restoreFailureNotificationId++,
+                        new NotificationCompat.Builder(getBaseContext())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle("Restore Failed")
+                                .setContentText("Restore failed for " + packageName)
+                                .setTicker("Restore Failed")
                                 .build());
     }
 

@@ -17,6 +17,8 @@ public class BackupIntentService extends AdvancedIntentService {
 
     private static final String EXTRA_PACKAGE_NAME = "com.tf.fluxbackup.service.extra.PACKAGE_NAME";
 
+    private static int backupFailureNotificationId = 1000;
+
     public BackupIntentService() {
         super("BackupIntentService");
     }
@@ -52,7 +54,11 @@ public class BackupIntentService extends AdvancedIntentService {
     private void handleActionBackup(String packageName) {
         showProgressNotification(packageName);
 
-        BackupManager.backupPackage(getBaseContext(), packageName);
+        boolean backupSuccess = BackupManager.backupPackage(getBaseContext(), packageName);
+
+        if (!backupSuccess) {
+            showBackupFailureNotification(packageName);
+        }
 
         if (wasLastInQueue()) {
             showBackupCompleteNotification();
@@ -74,6 +80,17 @@ public class BackupIntentService extends AdvancedIntentService {
                                 .setContentText(packageName)
                                 .setTicker("Backing Up - " + progressInPercent)
                                 .setOngoing(true)
+                                .build());
+    }
+
+    private void showBackupFailureNotification(String packageName) {
+        NotificationManagerCompat.from(getBaseContext())
+                .notify(backupFailureNotificationId++,
+                        new NotificationCompat.Builder(getBaseContext())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle("Backup Failed")
+                                .setContentText("Backed failed for " + packageName)
+                                .setTicker("Backup Failed")
                                 .build());
     }
 
