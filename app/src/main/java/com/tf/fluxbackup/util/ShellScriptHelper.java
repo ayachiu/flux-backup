@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  */
 public class ShellScriptHelper {
     
-    static String executeShell(String command) throws IOException, InterruptedException {
+    public static String executeShell(String command) throws IOException, InterruptedException {
         Process process = Runtime.getRuntime().exec("su");
 
         DataOutputStream os = new DataOutputStream(process.getOutputStream());

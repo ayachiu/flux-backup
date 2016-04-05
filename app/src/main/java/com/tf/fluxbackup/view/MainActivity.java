@@ -1,7 +1,9 @@
 package com.tf.fluxbackup.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +11,9 @@ import android.view.MenuItem;
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
 import com.tf.fluxbackup.util.BackupManager;
+import com.tf.fluxbackup.util.ShellScriptHelper;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +25,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        currentFragment =  ActionChoiceFragment.newInstance();
+        try {
+            String output = ShellScriptHelper.executeShell("ls /data/data");
+
+            if (output.equals("") || output.contains("denied")) {
+                showNoRootMessage();
+
+                return;
+            }
+        } catch (IOException | InterruptedException e) {
+            showNoRootMessage();
+
+            return;
+        }
+
+        currentFragment = ActionChoiceFragment.newInstance();
 
         if (BackupManager.getAllBackedUpPackages().size() == 0) {
             currentFragment = BackupFragment.newInstance();
@@ -29,6 +48,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.root_layout, currentFragment)
                 .commit();
+    }
+
+    private void showNoRootMessage() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Requires Root Access")
+                .setMessage("Sorry, but this application works only with root access. :(")
+                .setPositiveButton("I understand", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        MainActivity.this.finish();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -47,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentFragment != null && currentFragment instanceof OptionsMenuFragment) {
             return currentFragment.onOptionsItemSelected(item);
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
 
