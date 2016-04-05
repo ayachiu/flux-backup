@@ -1,13 +1,14 @@
 package com.tf.fluxbackup.view;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
+import com.tf.fluxbackup.util.BackupManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,8 +20,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Fragment fragment = ActionChoiceFragment.newInstance();
+
+        if (BackupManager.getAllBackedUpPackages().size() == 0) {
+            fragment = BackupFragment.newInstance();
+        }
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_layout, ActionChoiceFragment.newInstance())
+                .replace(R.id.root_layout, fragment)
                 .commit();
     }
 
