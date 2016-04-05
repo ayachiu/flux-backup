@@ -8,6 +8,7 @@ import android.support.v7.app.NotificationCompat;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.AdvancedIntentService;
+import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.util.BackupManager;
 import com.tf.fluxbackup.util.Constants;
 
@@ -53,6 +54,8 @@ public class BackupIntentService extends AdvancedIntentService {
      */
     private void handleActionBackup(String packageName) {
         showProgressNotification(packageName);
+
+        ProgressReporter.reportProgress(getBaseContext(), getQueueProgress(), getQueueSize(), packageName);
 
         boolean backupSuccess = BackupManager.backupPackage(getBaseContext(), packageName);
 

@@ -2,6 +2,7 @@ package com.tf.fluxbackup.view;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
+import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.RestoreIntentService;
 import com.tf.fluxbackup.util.BackupManager;
 
@@ -31,6 +33,7 @@ public class RestoreFragment extends OptionsMenuFragment {
     private RecyclerView listBackups;
     private List<String> backedUpPackages;
     private List<String> selectedPackages = new ArrayList<>();
+    private RestoreProgressReceiver progressReporter;
 
     public RestoreFragment() {
         // Required empty public constructor
@@ -56,6 +59,20 @@ public class RestoreFragment extends OptionsMenuFragment {
         listBackups = (RecyclerView) view.findViewById(R.id.list_backups);
 
         new BackupFetcher().execute();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        progressReporter = new RestoreProgressReceiver(getActivity());
+    }
+
+    @Override
+    public void onStop() {
+        progressReporter.unregister();
+
+        super.onStop();
     }
 
     @Override
@@ -190,6 +207,18 @@ public class RestoreFragment extends OptionsMenuFragment {
             } else {
                 selectedPackages.remove(backedUpPackages.get(getLayoutPosition()));
             }
+        }
+    }
+
+    private class RestoreProgressReceiver extends ProgressReporter {
+
+        public RestoreProgressReceiver(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onProgress(int progress, int total, String current) {
+            // TODO Show progress on UI
         }
     }
 }

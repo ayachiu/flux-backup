@@ -2,6 +2,9 @@ package com.tf.fluxbackup.view;
 
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
+import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.BackupIntentService;
 import com.tf.fluxbackup.util.PackageManagerHelper;
 
@@ -33,6 +37,7 @@ public class BackupFragment extends OptionsMenuFragment {
     private RecyclerView listApplications;
     private List<PackageInfo> applicationInfos;
     private List<String> selectedPackages = new ArrayList<>();
+    private BackupProgressReceiver progressReporter;
 
     public BackupFragment() {
         // Required empty public constructor
@@ -58,6 +63,20 @@ public class BackupFragment extends OptionsMenuFragment {
         listApplications = (RecyclerView) view.findViewById(R.id.list_applications);
 
         new ApplicationFetcher().execute();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        progressReporter = new BackupProgressReceiver(getActivity());
+    }
+
+    @Override
+    public void onStop() {
+        progressReporter.unregister();
+
+        super.onStop();
     }
 
     @Override
@@ -196,6 +215,18 @@ public class BackupFragment extends OptionsMenuFragment {
             } else {
                 selectedPackages.remove(applicationInfos.get(getLayoutPosition()).packageName);
             }
+        }
+    }
+
+    private class BackupProgressReceiver extends ProgressReporter {
+
+        public BackupProgressReceiver(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onProgress(int progress, int total, String current) {
+            // TODO Show progress on UI
         }
     }
 }
