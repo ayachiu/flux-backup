@@ -1,12 +1,15 @@
 package com.tf.fluxbackup.view;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import com.tf.fluxbackup.R;
 
@@ -43,6 +46,24 @@ public class ActionChoiceFragment extends Fragment {
 
         btnActionBackup.setOnClickListener(btnActionBackupOnClickListener);
         btnActionRestore.setOnClickListener(btnActionRestoreOnClickListener);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getContext() != null) {
+                    btnActionBackup.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.emphasize_button));
+                }
+            }
+        }, 1000);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getContext() != null) {
+                    btnActionRestore.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.emphasize_button));
+                }
+            }
+        }, 1500);
     }
 
     private View.OnClickListener btnActionBackupOnClickListener = new View.OnClickListener() {

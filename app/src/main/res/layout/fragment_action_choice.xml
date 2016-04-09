@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
+        android:gravity="center"
         android:textColor="@color/colorText"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/choose_action" />
@@ -26,7 +27,7 @@
             android:id="@+id/btn_action_backup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="32dp"
             android:background="@drawable/button_selector"
             android:textColor="@color/button_text_selector"
             android:text="@string/backup" />
@@ -43,7 +44,7 @@
             android:id="@+id/btn_action_restore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="32dp"
             android:background="@drawable/button_selector"
             android:textColor="@color/button_text_selector"
             android:text="@string/restore"/>
