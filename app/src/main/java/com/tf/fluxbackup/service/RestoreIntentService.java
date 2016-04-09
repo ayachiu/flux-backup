@@ -78,9 +78,9 @@ public class RestoreIntentService extends AdvancedIntentService {
                 .notify(Constants.NOTIFICATION_RESTORE,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Restoring - " + progressInPercent)
+                                .setContentTitle(String.format(getString(R.string.restoring), progressInPercent))
                                 .setContentText(packageName)
-                                .setTicker("Restoring - " + progressInPercent)
+                                .setTicker(String.format(getString(R.string.restoring), progressInPercent))
                                 .setOngoing(true)
                                 .build());
     }
@@ -90,9 +90,9 @@ public class RestoreIntentService extends AdvancedIntentService {
                 .notify(restoreFailureNotificationId++,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Restore Failed")
+                                .setContentTitle(getString(R.string.restore_failed))
                                 .setContentText("Restore failed for " + packageName)
-                                .setTicker("Restore Failed")
+                                .setTicker(getString(R.string.restore_failed))
                                 .build());
     }
 
@@ -101,9 +101,9 @@ public class RestoreIntentService extends AdvancedIntentService {
                 .notify(Constants.NOTIFICATION_RESTORE,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Restore Complete")
+                                .setContentTitle(getString(R.string.restore_complete))
                                 .setContentText("Restored " + getQueueSize() + " applications")
-                                .setTicker("Restore Complete")
+                                .setTicker(getString(R.string.restore_complete))
                                 .build());
     }
 }

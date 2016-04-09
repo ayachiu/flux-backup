@@ -2,9 +2,7 @@ package com.tf.fluxbackup.view;
 
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -20,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
@@ -217,14 +216,16 @@ public class BackupFragment extends OptionsMenuFragment {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {
-                selectedPackages.add(applicationInfos.get(getLayoutPosition()).packageName);
+                selectedPackages.add(applicationInfos.get(getLayoutPosition()).getPackageName());
             } else {
-                selectedPackages.remove(applicationInfos.get(getLayoutPosition()).packageName);
+                selectedPackages.remove(applicationInfos.get(getLayoutPosition()).getPackageName());
             }
         }
     }
 
     private class BackupProgressReceiver extends ProgressReporter {
+
+        private ProgressDialog progressDialog;
 
         public BackupProgressReceiver(Context context) {
             super(context);
@@ -232,7 +233,23 @@ public class BackupFragment extends OptionsMenuFragment {
 
         @Override
         public void onProgress(int progress, int total, String current) {
-            // TODO Show progress on UI
+            if (progressDialog == null || !progressDialog.isShowing()) {
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.show();
+            }
+
+            progressDialog.setMessage(String.format(getString(R.string.backing_up), current));
+            progressDialog.setProgress(progress);
+            progressDialog.setMax(total);
+
+            if (total == progress) {
+                progressDialog.dismiss();
+
+                Toast.makeText(getContext(), R.string.backup_complete, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
@@ -248,13 +249,31 @@ public class RestoreFragment extends OptionsMenuFragment {
 
     private class RestoreProgressReceiver extends ProgressReporter {
 
+        private ProgressDialog progressDialog;
+
         public RestoreProgressReceiver(Context context) {
             super(context);
         }
 
         @Override
         public void onProgress(int progress, int total, String current) {
-            // TODO Show progress on UI
+            if (progressDialog == null || !progressDialog.isShowing()) {
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressDialog.show();
+            }
+
+            progressDialog.setMessage(String.format(getString(R.string.restoring), current));
+            progressDialog.setProgress(progress);
+            progressDialog.setMax(total);
+
+            if (total == progress) {
+                progressDialog.dismiss();
+
+                Toast.makeText(getContext(), R.string.restore_complete, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

@@ -7,4 +7,11 @@
     <string name="select_all">Select All</string>
     <string name="select_none">Select None</string>
     <string name="delete">Delete</string>
+    <string name="backing_up">Backing Up - %s</string>
+    <string name="restoring">Restoring - %s</string>
+    <string name="title_dialog_progress">Processing - %s</string>
+    <string name="backup_complete">Backup Complete</string>
+    <string name="backup_failed">Backup Failed</string>
+    <string name="restore_complete">Restore Complete</string>
+    <string name="restore_failed">Restore Failed</string>
 </resources>

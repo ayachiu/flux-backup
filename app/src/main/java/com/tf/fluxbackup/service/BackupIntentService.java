@@ -79,9 +79,9 @@ public class BackupIntentService extends AdvancedIntentService {
                 .notify(Constants.NOTIFICATION_BACKUP,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Backing Up - " + progressInPercent)
+                                .setContentTitle(String.format(getString(R.string.backing_up), progressInPercent))
                                 .setContentText(packageName)
-                                .setTicker("Backing Up - " + progressInPercent)
+                                .setTicker(String.format(getString(R.string.backing_up), progressInPercent))
                                 .setOngoing(true)
                                 .build());
     }
@@ -91,9 +91,9 @@ public class BackupIntentService extends AdvancedIntentService {
                 .notify(backupFailureNotificationId++,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Backup Failed")
+                                .setContentTitle(getString(R.string.backup_failed))
                                 .setContentText("Backed failed for " + packageName)
-                                .setTicker("Backup Failed")
+                                .setTicker(getString(R.string.backup_failed))
                                 .build());
     }
 
@@ -102,9 +102,9 @@ public class BackupIntentService extends AdvancedIntentService {
                 .notify(Constants.NOTIFICATION_BACKUP,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Backup Complete")
+                                .setContentTitle(getString(R.string.backup_complete))
                                 .setContentText("Backed up " + getQueueSize() + " applications")
-                                .setTicker("Backup Complete")
+                                .setTicker(getString(R.string.backup_complete))
                                 .build());
     }
 }
