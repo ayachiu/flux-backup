@@ -11,18 +11,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by kamran on 4/2/16.
  */
 public class BackupManager {
 
-    private static final String BACKUP_LOCATION = "/sdcard/team.fluxion/FluxBackup/backups/";
-
     public static boolean backupPackage(Context context, String packageName) {
         boolean success = true;
 
-        File backupFolder = new File(BACKUP_LOCATION + packageName);
+        File backupFolder = new File(Constants.BACKUP_LOCATION + packageName);
 
         try {
             backupFolder.mkdirs();
@@ -47,9 +46,9 @@ public class BackupManager {
 
             // Copy application archives to backup location
             command += "cp " + context.getFilesDir().getAbsolutePath() + "/app.tar.gz"
-                    + " " + BACKUP_LOCATION + packageName + "/\n";
+                    + " " + Constants.BACKUP_LOCATION + packageName + "/\n";
             command += "cp " + context.getFilesDir().getAbsolutePath() + "/data.tar.gz"
-                    + " " + BACKUP_LOCATION + packageName + "/\n";
+                    + " " + Constants.BACKUP_LOCATION + packageName + "/\n";
 
             // Clean up
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
@@ -61,8 +60,8 @@ public class BackupManager {
             if (!backupFolder.exists()
                     || backupFolder.list().length < 2
                     || backupFolder.length() < 1000
-                    || System.currentTimeMillis() - backupFiles[0].lastModified() > 2000
-                    || System.currentTimeMillis() - backupFiles[1].lastModified() > 2000) {
+                    || System.currentTimeMillis() - backupFiles[0].lastModified() > 5000
+                    || System.currentTimeMillis() - backupFiles[1].lastModified() > 5000) {
                 success = false;
             }
         } catch (InterruptedException | IOException e) {
@@ -82,12 +81,12 @@ public class BackupManager {
         boolean success = true;
 
         try {
-            new File(BACKUP_LOCATION + packageName).mkdirs();
+            new File(Constants.BACKUP_LOCATION + packageName).mkdirs();
 
             String command = "";
 
             // Copy application archives from backup location
-            command += "cp " + BACKUP_LOCATION + packageName + "/*"
+            command += "cp " + Constants.BACKUP_LOCATION + packageName + "/*"
                     + " " + context.getFilesDir().getAbsolutePath() + "/\n";
 
             // Extract and install APK from the archive
@@ -127,7 +126,7 @@ public class BackupManager {
     public static List<String> getAllBackedUpPackages() {
         ArrayList<String> backedUpPackages = new ArrayList<>();
 
-        File backupDirectory = new File(BACKUP_LOCATION);
+        File backupDirectory = new File(Constants.BACKUP_LOCATION);
 
         if (backupDirectory.exists()) {
             File[] files = backupDirectory.listFiles();
@@ -148,7 +147,7 @@ public class BackupManager {
     }
 
     public static void deleteBackups(final List<String> packages) {
-        File backupDirectory = new File(BACKUP_LOCATION);
+        File backupDirectory = new File(Constants.BACKUP_LOCATION);
 
         if (backupDirectory.exists()) {
             File[] filesToBeDeleted = backupDirectory.listFiles(new FilenameFilter() {
