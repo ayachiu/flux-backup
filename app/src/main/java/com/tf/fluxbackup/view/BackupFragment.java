@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.OptionsMenuFragment;
+import com.tf.fluxbackup.model.PackageDetails;
 import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.BackupIntentService;
 import com.tf.fluxbackup.util.PackageManagerHelper;
@@ -35,7 +36,7 @@ public class BackupFragment extends OptionsMenuFragment {
     private static final String TAG = BackupFragment.class.getSimpleName();
 
     private RecyclerView listApplications;
-    private List<PackageInfo> applicationInfos;
+    private List<PackageDetails> applicationInfos;
     private List<String> selectedPackages = new ArrayList<>();
     private BackupProgressReceiver progressReporter;
 
@@ -110,9 +111,9 @@ public class BackupFragment extends OptionsMenuFragment {
     }
 
     private void selectAllPackages() {
-        for (PackageInfo packageInfo : applicationInfos) {
-            if (!selectedPackages.contains(packageInfo.packageName)) {
-                selectedPackages.add(packageInfo.packageName);
+        for (PackageDetails packageDetails : applicationInfos) {
+            if (!selectedPackages.contains(packageDetails.getPackageName())) {
+                selectedPackages.add(packageDetails.getPackageName());
             }
         }
 
@@ -173,11 +174,16 @@ public class BackupFragment extends OptionsMenuFragment {
 
         @Override
         public void onBindViewHolder(ApplicationViewHolder holder, int position) {
-            holder.imgIcon.setImageDrawable(applicationInfos.get(position).applicationInfo.loadIcon(packageManager));
+            try {
+                holder.imgIcon.setImageDrawable(packageManager
+                        .getApplicationIcon(applicationInfos.get(position).getPackageName()));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
 
-            holder.lblName.setText(applicationInfos.get(position).applicationInfo.loadLabel(packageManager));
+            holder.lblName.setText(applicationInfos.get(position).getLabel());
 
-            holder.chkSelect.setChecked(selectedPackages.contains(applicationInfos.get(position).packageName));
+            holder.chkSelect.setChecked(selectedPackages.contains(applicationInfos.get(position).getPackageName()));
         }
 
         @Override
