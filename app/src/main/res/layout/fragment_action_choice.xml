@@ -3,14 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@color/colorPrimary"
     tools:context="com.tf.fluxbackup.view.ActionChoiceFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:textColor="@color/colorText"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/choose_action"/>
+        android:text="@string/choose_action" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -23,17 +26,26 @@
             android:id="@+id/btn_action_backup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_selector"
+            android:textColor="@color/button_text_selector"
             android:text="@string/backup" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:textColor="@color/colorText"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/or"/>
 
         <Button
             android:id="@+id/btn_action_restore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/button_selector"
+            android:textColor="@color/button_text_selector"
             android:text="@string/restore"/>
 
     </LinearLayout>
