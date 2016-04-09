@@ -23,7 +23,9 @@ public class BackupManager {
         boolean success = true;
 
         try {
-            new File(BACKUP_LOCATION + packageName).mkdirs();
+            File backupFolder = new File(BACKUP_LOCATION + packageName);
+
+            backupFolder.mkdirs();
 
             String command = "";
 
@@ -53,6 +55,16 @@ public class BackupManager {
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
 
             ShellScriptHelper.executeShell(command);
+
+            File[] backupFiles = backupFolder.listFiles();
+
+            if (!backupFolder.exists()
+                    || backupFolder.list().length < 2
+                    || backupFolder.length() < 1000
+                    || System.currentTimeMillis() - backupFiles[0].lastModified() > 2000
+                    || System.currentTimeMillis() - backupFiles[1].lastModified() > 2000) {
+                success = false;
+            }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
 
