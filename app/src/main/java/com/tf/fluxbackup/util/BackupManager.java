@@ -22,9 +22,9 @@ public class BackupManager {
     public static boolean backupPackage(Context context, String packageName) {
         boolean success = true;
 
-        try {
-            File backupFolder = new File(BACKUP_LOCATION + packageName);
+        File backupFolder = new File(BACKUP_LOCATION + packageName);
 
+        try {
             backupFolder.mkdirs();
 
             String command = "";
@@ -69,6 +69,10 @@ public class BackupManager {
             e.printStackTrace();
 
             success = false;
+        }
+
+        if (!success) {
+            deleteDirectory(backupFolder);
         }
 
         return success;
