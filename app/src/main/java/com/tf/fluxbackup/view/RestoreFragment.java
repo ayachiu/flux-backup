@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tf.fluxbackup.R;
-import com.tf.fluxbackup.model.OptionsMenuFragment;
 import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.RestoreIntentService;
 import com.tf.fluxbackup.util.BackupManager;

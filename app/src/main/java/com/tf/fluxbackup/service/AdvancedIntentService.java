@@ -1,4 +1,4 @@
-package com.tf.fluxbackup.model;
+package com.tf.fluxbackup.service;
 
 import android.app.Service;
 import android.content.Intent;

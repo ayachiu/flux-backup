@@ -3,7 +3,6 @@ package com.tf.fluxbackup.view;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tf.fluxbackup.R;
-import com.tf.fluxbackup.model.OptionsMenuFragment;
 import com.tf.fluxbackup.model.PackageDetails;
 import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.BackupIntentService;

@@ -1,4 +1,4 @@
-package com.tf.fluxbackup.model;
+package com.tf.fluxbackup.view;
 
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
