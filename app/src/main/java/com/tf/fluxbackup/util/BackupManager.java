@@ -23,6 +23,8 @@ public class BackupManager {
 
         File backupFolder = new File(Constants.BACKUP_LOCATION + packageName);
 
+        deleteDirectory(backupFolder);
+
         try {
             backupFolder.mkdirs();
 
@@ -55,23 +57,15 @@ public class BackupManager {
 
             ShellScriptHelper.executeShell(command);
 
-            File[] backupFiles = backupFolder.listFiles();
-
             if (!backupFolder.exists()
                     || backupFolder.list().length < 2
-                    || backupFolder.length() < 1000
-                    || System.currentTimeMillis() - backupFiles[0].lastModified() > 5000
-                    || System.currentTimeMillis() - backupFiles[1].lastModified() > 5000) {
+                    || backupFolder.length() < 1000) {
                 success = false;
             }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
 
             success = false;
-        }
-
-        if (!success) {
-            deleteDirectory(backupFolder);
         }
 
         return success;
