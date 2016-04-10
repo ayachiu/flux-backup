@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.root_layout, currentFragment)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .commit();
     }
 
