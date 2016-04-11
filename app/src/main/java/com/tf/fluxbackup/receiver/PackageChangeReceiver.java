@@ -21,7 +21,8 @@ public class PackageChangeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String packageName = intent.getData().getEncodedSchemeSpecificPart();
 
-        if (packageName.equals(context.getApplicationContext().getPackageName())) {
+        if (packageName.equals(context.getApplicationContext().getPackageName())
+                || DatabaseLayer.getAllPackages().size() == 0) {
             return;
         }
 
