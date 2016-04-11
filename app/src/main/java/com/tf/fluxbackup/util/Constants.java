@@ -10,6 +10,6 @@ public class Constants {
 
     public static final String APP_DATA_LOCATION = "/sdcard/team.fluxion/";
     public static final String BACKUP_LOCATION = APP_DATA_LOCATION + "FluxBackup/backups/";
-    public static final String DATABASE_LOCATION = APP_DATA_LOCATION + "FluxBackup/cache/";
+    public static final String CACHE_LOCATION = APP_DATA_LOCATION + "FluxBackup/cache/";
 
 }

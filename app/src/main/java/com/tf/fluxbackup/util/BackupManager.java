@@ -55,7 +55,9 @@ public class BackupManager {
             // Clean up
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
 
-            ShellScriptHelper.executeShell(command);
+            String log = ShellScriptHelper.executeShell(command);
+
+            Logger.logToFile(log);
 
             if (!backupFolder.exists()
                     || backupFolder.list().length < 2
@@ -107,7 +109,10 @@ public class BackupManager {
 
             // TODO Handle multi user environment
             command = "chown -R u0_a" + String.valueOf(applicationInfo.uid).substring(2) + " /data/data/" + packageName;
-            ShellScriptHelper.executeShell(command);
+
+            String log = ShellScriptHelper.executeShell(command);
+
+            Logger.logToFile(log);
         } catch (InterruptedException | IOException | PackageManager.NameNotFoundException e) {
             e.printStackTrace();
 
