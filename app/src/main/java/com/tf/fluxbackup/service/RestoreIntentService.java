@@ -63,6 +63,8 @@ public class RestoreIntentService extends AdvancedIntentService {
 
         if (wasLastInQueue()) {
             showRestoreCompleteNotification();
+
+            ProgressReporter.reportProgress(getBaseContext(), getQueueSize(), getQueueSize(), packageName);
         }
     }
 

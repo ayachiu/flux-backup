@@ -64,6 +64,8 @@ public class BackupIntentService extends AdvancedIntentService {
 
         if (wasLastInQueue()) {
             showBackupCompleteNotification();
+
+            ProgressReporter.reportProgress(getBaseContext(), getQueueSize(), getQueueSize(), packageName);
         }
     }
 
