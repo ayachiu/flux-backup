@@ -71,10 +71,10 @@ public class BackupFragment extends OptionsMenuFragment {
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         progressReporter.unregister();
 
-        super.onStop();
+        super.onDestroy();
     }
 
     @Override
