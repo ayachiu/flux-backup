@@ -53,7 +53,7 @@ public class RestoreIntentService extends AdvancedIntentService {
     private void handleActionRestore(String packageName) {
         showProgressNotification(packageName);
 
-        ProgressReporter.reportProgress(getBaseContext(), getQueueProgress(), getQueueSize(), packageName);
+        ProgressReporter.reportProgress(getBaseContext(), getQueueProgress() - 1, getQueueSize(), packageName);
 
         boolean restoreSuccess = BackupManager.restorePackage(getBaseContext(), packageName);
 

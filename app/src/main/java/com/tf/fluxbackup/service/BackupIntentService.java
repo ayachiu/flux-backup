@@ -54,7 +54,7 @@ public class BackupIntentService extends AdvancedIntentService {
     private void handleActionBackup(String packageName) {
         showProgressNotification(packageName);
 
-        ProgressReporter.reportProgress(getBaseContext(), getQueueProgress(), getQueueSize(), packageName);
+        ProgressReporter.reportProgress(getBaseContext(), getQueueProgress() - 1, getQueueSize(), packageName);
 
         boolean backupSuccess = BackupManager.backupPackage(getBaseContext(), packageName);
 
