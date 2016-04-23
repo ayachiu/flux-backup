@@ -77,7 +77,9 @@ public class RestoreFragment extends OptionsMenuFragment {
 
     @Override
     public void onDestroy() {
-        progressReporter.unregister();
+        if (progressReporter != null) {
+            progressReporter.unregister();
+        }
 
         super.onDestroy();
     }
