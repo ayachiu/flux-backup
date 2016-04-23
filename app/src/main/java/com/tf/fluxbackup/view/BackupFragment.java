@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.PackageDetails;
 import com.tf.fluxbackup.model.ProgressReporter;
+import com.tf.fluxbackup.model.SimpleKeyValuePair;
 import com.tf.fluxbackup.service.BackupIntentService;
 import com.tf.fluxbackup.util.AnalyticsHelper;
 import com.tf.fluxbackup.util.PackageManagerHelper;
@@ -126,6 +127,10 @@ public class BackupFragment extends OptionsMenuFragment {
         for (String packageName : selectedPackages) {
             BackupIntentService.backup(getContext(), packageName);
         }
+
+        AnalyticsHelper.sendCustomEvent("Backup Queued",
+                new SimpleKeyValuePair("numberOfSelectedApplications",
+                        String.valueOf(selectedPackages.size())));
     }
 
     private class ApplicationFetcher extends AsyncTask<Void, Void, Void> {
@@ -142,6 +147,10 @@ public class BackupFragment extends OptionsMenuFragment {
         @Override
         protected Void doInBackground(Void... params) {
             applicationInfos = PackageManagerHelper.getInstalledPackages(getContext());
+
+            AnalyticsHelper.sendCustomEvent("Applications Fetched",
+                    new SimpleKeyValuePair("numberOfInstalledApplications",
+                            String.valueOf(applicationInfos.size())));
 
             return null;
         }

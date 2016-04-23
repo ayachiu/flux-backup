@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.ProgressReporter;
+import com.tf.fluxbackup.model.SimpleKeyValuePair;
 import com.tf.fluxbackup.service.RestoreIntentService;
 import com.tf.fluxbackup.util.AnalyticsHelper;
 import com.tf.fluxbackup.util.BackupManager;
@@ -160,6 +161,10 @@ public class RestoreFragment extends OptionsMenuFragment {
         for (String packageName : selectedPackages) {
             RestoreIntentService.restore(getContext(), packageName);
         }
+
+        AnalyticsHelper.sendCustomEvent("Restoration Queued",
+                new SimpleKeyValuePair("numberOfSelectedApplications",
+                        String.valueOf(selectedPackages.size())));
     }
 
     private class BackupFetcher extends AsyncTask<Void, Void, Void> {
@@ -176,6 +181,10 @@ public class RestoreFragment extends OptionsMenuFragment {
         @Override
         protected Void doInBackground(Void... params) {
             backedUpPackages = BackupManager.getAllBackedUpPackages();
+
+            AnalyticsHelper.sendCustomEvent("Backups Fetched",
+                    new SimpleKeyValuePair("numberOfBackedUpApplications",
+                            String.valueOf(backedUpPackages.size())));
 
             return null;
         }
