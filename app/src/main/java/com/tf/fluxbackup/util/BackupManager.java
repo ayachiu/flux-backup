@@ -48,9 +48,9 @@ public class BackupManager {
 
             // Copy application archives to backup location
             command += "cp " + context.getFilesDir().getAbsolutePath() + "/app.tar.gz"
-                    + " " + Constants.BACKUP_LOCATION + packageName + "/\n";
+                    + " " + Constants.BACKUP_LOCATION_SHELL + packageName + "/\n";
             command += "cp " + context.getFilesDir().getAbsolutePath() + "/data.tar.gz"
-                    + " " + Constants.BACKUP_LOCATION + packageName + "/\n";
+                    + " " + Constants.BACKUP_LOCATION_SHELL + packageName + "/\n";
 
             // Clean up
             command += "rm -rd " + context.getFilesDir().getAbsolutePath() + "/*\n";
@@ -82,7 +82,7 @@ public class BackupManager {
             String command = "";
 
             // Copy application archives from backup location
-            command += "cp " + Constants.BACKUP_LOCATION + packageName + "/*"
+            command += "cp " + Constants.BACKUP_LOCATION_SHELL + packageName + "/*"
                     + " " + context.getFilesDir().getAbsolutePath() + "/\n";
 
             // Extract and install APK from the archive
