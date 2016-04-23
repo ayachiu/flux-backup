@@ -28,8 +28,13 @@ public class AnalyticsHelper {
     }
 
     public static void sendCustomEvent(String action, SimpleKeyValuePair... keyValuePairs) {
+        sendCustomEvent(action, "Dummy Category",keyValuePairs);
+    }
+
+    public static void sendCustomEvent(String action, String category, SimpleKeyValuePair... keyValuePairs) {
         if (mTracker != null) {
             HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder()
+                    .setCategory(category)
                     .setAction(action);
 
             for (SimpleKeyValuePair keyValuePair : keyValuePairs) {
