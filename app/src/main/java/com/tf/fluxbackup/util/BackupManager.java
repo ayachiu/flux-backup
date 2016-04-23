@@ -63,6 +63,8 @@ public class BackupManager {
                     || backupFolder.list().length < 2
                     || backupFolder.length() < 1000) {
                 success = false;
+
+                deleteDirectory(backupFolder);
             }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
