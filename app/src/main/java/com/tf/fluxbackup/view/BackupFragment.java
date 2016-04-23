@@ -19,13 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.tf.fluxbackup.MainApplication;
 import com.tf.fluxbackup.R;
 import com.tf.fluxbackup.model.PackageDetails;
 import com.tf.fluxbackup.model.ProgressReporter;
 import com.tf.fluxbackup.service.BackupIntentService;
+import com.tf.fluxbackup.util.AnalyticsHelper;
 import com.tf.fluxbackup.util.PackageManagerHelper;
 
 import java.util.ArrayList;
@@ -72,9 +70,7 @@ public class BackupFragment extends OptionsMenuFragment {
 
         progressReporter = new BackupProgressReceiver(getActivity());
 
-        Tracker tracker = ((MainApplication) getActivity().getApplication()).getDefaultTracker();
-        tracker.setScreenName(TAG);
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        AnalyticsHelper.sendScreenView(TAG);
     }
 
     @Override

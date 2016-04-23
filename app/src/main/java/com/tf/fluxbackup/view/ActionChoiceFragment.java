@@ -5,16 +5,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.tf.fluxbackup.MainApplication;
 import com.tf.fluxbackup.R;
+import com.tf.fluxbackup.util.AnalyticsHelper;
 
 public class ActionChoiceFragment extends Fragment {
 
@@ -75,9 +72,7 @@ public class ActionChoiceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Tracker tracker = ((MainApplication) getActivity().getApplication()).getDefaultTracker();
-        tracker.setScreenName(TAG);
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        AnalyticsHelper.sendScreenView(TAG);
     }
 
     private View.OnClickListener btnActionBackupOnClickListener = new View.OnClickListener() {
