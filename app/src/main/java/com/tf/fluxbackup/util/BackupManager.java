@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
+import com.tf.fluxbackup.model.SimpleKeyValuePair;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -20,6 +22,9 @@ public class BackupManager {
 
     public static boolean backupPackage(Context context, String packageName) {
         boolean success = true;
+
+        AnalyticsHelper.sendCustomEvent("Backup Started",
+                new SimpleKeyValuePair("package", packageName));
 
         File backupFolder = new File(Constants.BACKUP_LOCATION + packageName);
 
@@ -65,12 +70,29 @@ public class BackupManager {
                 success = false;
 
                 deleteDirectory(backupFolder);
+
+                AnalyticsHelper.sendCustomEvent("Backup Failed",
+                        new SimpleKeyValuePair("package", packageName),
+                        new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
+                        new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                        new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
             }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
 
+            AnalyticsHelper.sendCustomEvent("Backup Failed",
+                    new SimpleKeyValuePair("package", packageName),
+                    new SimpleKeyValuePair("errorMessage",  e.getMessage()),
+                    new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
+                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
+
             success = false;
         }
+
+        AnalyticsHelper.sendCustomEvent("Backup Succeeded",
+                new SimpleKeyValuePair("package", packageName),
+                new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
 
         return success;
     }
@@ -78,8 +100,13 @@ public class BackupManager {
     public static boolean restorePackage(Context context, String packageName) {
         boolean success = true;
 
+        AnalyticsHelper.sendCustomEvent("Restore Started",
+                new SimpleKeyValuePair("package", packageName));
+
+        File backupFolder = new File(Constants.BACKUP_LOCATION + packageName);
+
         try {
-            new File(Constants.BACKUP_LOCATION + packageName).mkdirs();
+            backupFolder.mkdirs();
 
             String command = "";
 
@@ -115,8 +142,21 @@ public class BackupManager {
             String log = ShellScriptHelper.executeShell(command);
 
             Logger.logToFile(log);
+
+            AnalyticsHelper.sendCustomEvent("Restore Succeeded",
+                    new SimpleKeyValuePair("package", packageName),
+                    new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
+                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
         } catch (InterruptedException | IOException | PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+
+            AnalyticsHelper.sendCustomEvent("Restore Succeeded",
+                    new SimpleKeyValuePair("package", packageName),
+                    new SimpleKeyValuePair("errorMessage", e.getMessage()),
+                    new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
+                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
 
             success = false;
         }

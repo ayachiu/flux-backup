@@ -7,6 +7,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.tf.fluxbackup.R;
+import com.tf.fluxbackup.model.SimpleKeyValuePair;
 
 /**
  * Created by kamran on 4/23/16.
@@ -23,6 +24,19 @@ public class AnalyticsHelper {
         if (mTracker != null) {
             mTracker.setScreenName(screenName);
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
+    }
+
+    public static void sendCustomEvent(String action, SimpleKeyValuePair... keyValuePairs) {
+        if (mTracker != null) {
+            HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder()
+                    .setAction(action);
+
+            for (SimpleKeyValuePair keyValuePair : keyValuePairs) {
+                eventBuilder.set(keyValuePair.getKey(), keyValuePair.getValue());
+            }
+
+            mTracker.send(eventBuilder.build());
         }
     }
 
