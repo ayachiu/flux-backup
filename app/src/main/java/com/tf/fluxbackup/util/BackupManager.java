@@ -74,7 +74,9 @@ public class BackupManager {
                 AnalyticsHelper.sendCustomEvent("Backup Failed",
                         new SimpleKeyValuePair("package", packageName),
                         new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
-                        new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                        new SimpleKeyValuePair("numberOfContents",  backupFolder.list() != null
+                                ? String.valueOf(backupFolder.list().length)
+                                : "0"),
                         new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
             }
         } catch (InterruptedException | IOException e) {
@@ -84,7 +86,9 @@ public class BackupManager {
                     new SimpleKeyValuePair("package", packageName),
                     new SimpleKeyValuePair("errorMessage",  e.getMessage()),
                     new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
-                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("numberOfContents",  backupFolder.list() != null
+                            ? String.valueOf(backupFolder.list().length)
+                            : "0"),
                     new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
 
             success = false;
@@ -146,7 +150,9 @@ public class BackupManager {
             AnalyticsHelper.sendCustomEvent("Restore Succeeded",
                     new SimpleKeyValuePair("package", packageName),
                     new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
-                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("numberOfContents",  backupFolder.list() != null
+                            ? String.valueOf(backupFolder.list().length)
+                            : "0"),
                     new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
         } catch (InterruptedException | IOException | PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -155,7 +161,9 @@ public class BackupManager {
                     new SimpleKeyValuePair("package", packageName),
                     new SimpleKeyValuePair("errorMessage", e.getMessage()),
                     new SimpleKeyValuePair("folderExists",  String.valueOf(backupFolder.exists())),
-                    new SimpleKeyValuePair("numberOfContents",  String.valueOf(backupFolder.list().length)),
+                    new SimpleKeyValuePair("numberOfContents",  backupFolder.list() != null
+                            ? String.valueOf(backupFolder.list().length)
+                            : "0"),
                     new SimpleKeyValuePair("backupSize",  String.valueOf(backupFolder.length())));
 
             success = false;
