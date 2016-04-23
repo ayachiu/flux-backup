@@ -11,9 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.tf.fluxbackup.MainApplication;
 import com.tf.fluxbackup.R;
 
 public class ActionChoiceFragment extends Fragment {
+
+    private static final String TAG = ActionChoiceFragment.class.getSimpleName();
 
     private MainActivity mainActivity;
     private View btnActionBackup;
@@ -64,6 +69,15 @@ public class ActionChoiceFragment extends Fragment {
                 }
             }
         }, 1500);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Tracker tracker = ((MainApplication) getActivity().getApplication()).getDefaultTracker();
+        tracker.setScreenName(TAG);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private View.OnClickListener btnActionBackupOnClickListener = new View.OnClickListener() {
