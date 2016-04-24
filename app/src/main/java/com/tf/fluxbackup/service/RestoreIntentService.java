@@ -73,15 +73,16 @@ public class RestoreIntentService extends AdvancedIntentService {
     }
 
     private void showProgressNotification(String packageName) {
-        String progressInPercent = (((getQueueProgress() - 1) * 100) / getQueueSize()) + "%";
+        int progressInPercent = (((getQueueProgress() - 1) * 100) / getQueueSize());
 
         NotificationManagerCompat.from(getBaseContext())
                 .notify(Constants.NOTIFICATION_RESTORE,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(String.format(getString(R.string.restoring), progressInPercent))
+                                .setContentTitle(String.format(getString(R.string.restoring), progressInPercent + "%"))
                                 .setContentText(packageName)
-                                .setTicker(String.format(getString(R.string.restoring), progressInPercent))
+                                .setTicker(String.format(getString(R.string.restoring), progressInPercent + "%"))
+                                .setProgress(100, progressInPercent, false)
                                 .setOngoing(true)
                                 .build());
     }

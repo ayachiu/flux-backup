@@ -74,15 +74,16 @@ public class BackupIntentService extends AdvancedIntentService {
     }
 
     private void showProgressNotification(String packageName) {
-        String progressInPercent = (((getQueueProgress() - 1) * 100) / getQueueSize()) + "%";
+        int progressInPercent = (((getQueueProgress() - 1) * 100) / getQueueSize());
 
         NotificationManagerCompat.from(getBaseContext())
                 .notify(Constants.NOTIFICATION_BACKUP,
                         new NotificationCompat.Builder(getBaseContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(String.format(getString(R.string.backing_up), progressInPercent))
+                                .setContentTitle(String.format(getString(R.string.backing_up), progressInPercent) + "%")
                                 .setContentText(packageName)
-                                .setTicker(String.format(getString(R.string.backing_up), progressInPercent))
+                                .setTicker(String.format(getString(R.string.backing_up), progressInPercent + "%"))
+                                .setProgress(100, progressInPercent, false)
                                 .setOngoing(true)
                                 .build());
     }
