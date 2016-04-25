@@ -1,6 +1,7 @@
 package com.tf.fluxbackup.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.provider.ContactsContract;
@@ -28,8 +29,10 @@ public class PackageManagerHelper {
             List<PackageInfo> installedPackages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA);
 
             for (PackageInfo installedPackage : installedPackages) {
-                DatabaseLayer.addPackage(new PackageDetails(installedPackage.packageName,
-                        installedPackage.applicationInfo.loadLabel(packageManager).toString()));
+                if ((installedPackage.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                    DatabaseLayer.addPackage(new PackageDetails(installedPackage.packageName,
+                            installedPackage.applicationInfo.loadLabel(packageManager).toString()));
+                }
             }
 
             packages.addAll(DatabaseLayer.getAllPackages());
